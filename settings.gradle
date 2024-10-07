@@ -34,9 +34,26 @@
  *
  * For more information, see: https://github.com/google/ExoPlayer/blob/release-v2/README.md
  */
-File extraSettings = new File(rootDir, 'extra-settings.gradle')
-if (extraSettings.exists()) {
-    apply from: extraSettings
+pluginManagement {
+    repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
 }
 
+rootProject.name = "uamp"
 include ':app', ':common', ':automotive'

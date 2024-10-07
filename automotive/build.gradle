@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    //alias(libs.plugins.kotlin.android.extensions)
+    alias(libs.plugins.compose.compiler)
+}
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    namespace "com.example.android.uamp.next"
+    compileSdk libs.versions.compileSdk.get().toInteger()
 
     defaultConfig {
         applicationId "com.example.android.uamp.next"
 
-        minSdkVersion 21
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
 
         versionCode 1
         versionName "1.0"
@@ -56,21 +60,30 @@ android {
 }
 
 dependencies {
+
     implementation project(':common')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.preference
 
-    implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
-    implementation "androidx.preference:preference:$androidx_preference_version"
-    implementation "androidx.car:car:$androidx_car_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
-    implementation "androidx.appcompat:appcompat:$androidx_app_compat_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:$arch_lifecycle_version"
+    implementation libs.androidx.car.app
+    // For Android Auto specific functionality
+    implementation libs.androidx.car.app.projected
+    // For Android Automotive specific functionality
+    implementation libs.androidx.car.app.automotive
+    // For testing
+    testImplementation libs.androidx.car.app.testing
 
-    implementation "com.google.android.gms:play-services-auth:$play_services_auth_version"
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.lifecycle.extensions
+    implementation libs.androidx.appcompat
 
-    testImplementation "junit:junit:$junit_version"
+    implementation libs.kotlin.stdlib.jdk8
 
-    androidTestImplementation "androidx.test:runner:$androidx_test_runner_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    implementation libs.play.services.auth
+
+    testImplementation libs.junit
+
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.espresso.core
 }

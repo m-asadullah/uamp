@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    //alias(libs.plugins.kotlin.android.extensions)
+    alias(libs.plugins.compose.compiler)
+}
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    namespace "com.example.android.uamp.next"
+    compileSdk libs.versions.compileSdk.get().toInteger()
 
     defaultConfig {
         applicationId "com.example.android.uamp.next"
         versionCode 1
         versionName "1.0"
 
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
         multiDexEnabled true
 
         compileOptions {
@@ -58,20 +62,19 @@ android {
 }
 
 dependencies {
-    implementation "com.android.support:multidex:$multidex_version"
-
     implementation project(':common')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation libs.android.support.multidex
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.fragment.ktx
+    implementation libs.androidx.recyclerview
 
-    implementation "androidx.appcompat:appcompat:$androidx_app_compat_version"
-    implementation "androidx.fragment:fragment-ktx:$fragment_version"
-    implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.lifecycle.extensions
 
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:$arch_lifecycle_version"
+    implementation libs.kotlin.stdlib.jdk8
 
     // Glide dependencies
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    implementation libs.github.bumptech.glide
+    kapt libs.github.bumptech.glide.compiler
 }

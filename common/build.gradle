@@ -14,20 +14,25 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'kotlin-android-extensions'
+plugins {
+    alias(libs.plugins.android.library)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
+    //alias(libs.plugins.kotlin.android.extensions)
+    alias(libs.plugins.compose.compiler)
+}
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    namespace "com.example.android.uamp.media"
+    compileSdk libs.versions.compileSdk.get().toInteger()
 
     defaultConfig {
+        //applicationId "com.example.android.uamp.media"
         versionCode 1
         versionName "1.0"
 
-        minSdkVersion rootProject.minSdkVersion
-        targetSdkVersion rootProject.targetSdkVersion
+        minSdkVersion libs.versions.minSdk.get().toInteger()
+        targetSdkVersion libs.versions.targetSdk.get().toInteger()
 
         testOptions.unitTests.includeAndroidResources = true
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
@@ -46,14 +51,16 @@ android {
 }
 
 dependencies {
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
-    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
 
-    api "androidx.media:media:$androidx_media_version"
+    api libs.kotlin.stdlib.jdk8
+    api libs.kotlinx.coroutines.core
+    api libs.kotlinx.coroutines.android
 
-    api "com.google.code.gson:gson:$gson_version"
+    api libs.androidx.media
 
+    api libs.gson
+
+    /*
     // ExoPlayer dependencies
 
     // This allows UAMP to utilize a local version of ExoPlayer, which is particularly
@@ -71,12 +78,18 @@ dependencies {
         api "com.google.android.exoplayer:extension-mediasession:$exoplayer_version"
         api "com.google.android.exoplayer:extension-cast:$exoplayer_version"
     }
+     */
+
+    api libs.exoplayer.core
+    api libs.exoplayer.ui
+    api libs.extension.mediasession
+    api libs.extension.cast
 
     // Glide dependencies
-    api "com.github.bumptech.glide:glide:$glide_version"
-    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    api libs.github.bumptech.glide
+    kapt libs.github.bumptech.glide.compiler
 
     // Testing
-    testImplementation "junit:junit:$junit_version"
-    testImplementation "org.robolectric:robolectric:$robolectric_version"
+    testImplementation libs.junit
+    testImplementation libs.robolectric
 }
